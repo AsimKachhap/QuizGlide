@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import { connectDb } from "./db/connectDb.js";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
@@ -25,5 +26,6 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
+  connectDb();
   console.log(`SERVER is up and running on PORT : ${PORT}`);
 });
