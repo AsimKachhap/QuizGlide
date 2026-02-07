@@ -49,5 +49,7 @@ const quizSchema = mongoose.Schema(
   },
 );
 
+quizSchema.index({ owner: 1 });
+
 const Quiz = mongoose.model("Quiz", quizSchema);
 export default Quiz;
