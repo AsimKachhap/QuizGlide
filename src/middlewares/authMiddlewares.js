@@ -23,7 +23,7 @@ export const authenticate = async (req, res, next) => {
     const user = await User.findById(decoded.user_id);
 
     if (!user) {
-      return req.status(401).json({
+      return res.status(401).json({
         message: "Unauthorized to access.",
       });
     }
