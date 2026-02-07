@@ -1,62 +1,74 @@
 import mongoose from "mongoose";
 
-const quizSchema = mongoose.Schema(
+const optionSchema = new mongoose.Schema(
   {
+    text: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    isCorrect: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { _id: false },
+);
+
+const questionSchema = new mongoose.Schema(
+  {
+    question: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    options: {
+      type: [optionSchema],
+      required: true,
+      validate: [
+        {
+          validator: (v) => v.length === 4,
+          message: "Exactly 4 options are required",
+        },
+        {
+          validator: (v) => v.filter((opt) => opt.isCorrect).length === 1,
+          message: "Exactly one option must be correct",
+        },
+      ],
+    },
+  },
+  { _id: true },
+);
+
+const quizSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     owner: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
 
     isComplete: {
       type: Boolean,
       default: false,
+      index: true,
     },
 
-    questions: [
-      {
-        question: {
-          type: String,
-          required: true,
-        },
-
-        opt1: {
-          type: String,
-          required: true,
-          isCorrect: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        opt2: {
-          type: String,
-          required: true,
-          isCorrect: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        opt3: {
-          type: String,
-          required: true,
-          isCorrect: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        opt4: {
-          type: String,
-          required: true,
-          isCorrect: {
-            type: Boolean,
-            default: false,
-          },
-        },
-      },
-    ],
+    questions: {
+      type: [questionSchema],
+      default: [],
+    },
   },
   {
-    timestapms: true,
+    timestamps: true,
   },
 );
 
