@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectDb } from "./db/connectDb.js";
 import authRoutes from "./routes/authRoutes.js";
+import quizRoutes from "./routes/quizRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 const PORT = process.env.PORT || 8080;
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/quiz", quizRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello from server");
