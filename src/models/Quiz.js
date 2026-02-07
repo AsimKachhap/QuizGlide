@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import User from "./User";
 
 const quizSchema = mongoose.Schema(
   {
     owner: {
       type: mongoose.Types.ObjectId,
-      ref: User,
+      ref: "User",
       required: true,
     },
 
@@ -24,22 +23,34 @@ const quizSchema = mongoose.Schema(
         opt1: {
           type: String,
           required: true,
-          isCorrect: false,
+          isCorrect: {
+            type: Boolean,
+            default: false,
+          },
         },
         opt2: {
           type: String,
           required: true,
-          isCorrect: false,
+          isCorrect: {
+            type: Boolean,
+            default: false,
+          },
         },
         opt3: {
           type: String,
           required: true,
-          isCorrect: false,
+          isCorrect: {
+            type: Boolean,
+            default: false,
+          },
         },
         opt4: {
           type: String,
           required: true,
-          isCorrect: false,
+          isCorrect: {
+            type: Boolean,
+            default: false,
+          },
         },
       },
     ],
@@ -49,7 +60,7 @@ const quizSchema = mongoose.Schema(
   },
 );
 
-quizSchema.index({ owner: 1 });
+quizSchema.index({ owner: 1, isComplete: 1 });
 
 const Quiz = mongoose.model("Quiz", quizSchema);
 export default Quiz;
