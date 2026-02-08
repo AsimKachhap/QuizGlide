@@ -21,7 +21,7 @@ app.use(
 const PORT = process.env.PORT || 8080;
 
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/quiz", quizRoutes);
+app.use("/api/v1/quizzes", quizRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello from server");
