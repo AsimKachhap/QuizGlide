@@ -1,11 +1,11 @@
 import express from "express";
-import { getMyQuizzes } from "../controllers/quizController.js";
+import { getMyQuizzes, createQuiz } from "../controllers/quizController.js";
 import { authenticate } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
-// GET ALL QUIZZES
 router.get("/", authenticate, getMyQuizzes);
+router.post("/", authenticate, createQuiz);
 
 //Quiz Routes to implement
 
