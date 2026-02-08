@@ -1,16 +1,19 @@
 import express from "express";
-import { getMyQuizzes, createQuiz } from "../controllers/quizController.js";
+import {
+  getMyQuizzes,
+  createQuiz,
+  getQuizById,
+} from "../controllers/quizController.js";
 import { authenticate } from "../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
 router.get("/", authenticate, getMyQuizzes);
 router.post("/", authenticate, createQuiz);
+router.get("/:quizId", authenticate, getQuizById);
 
 //Quiz Routes to implement
 
-// 1. router.get("/", getMyQuizzes)
-// 2. router.post("/", createQuiz)
 // 3. router.get("/:quizId", getQuizById)
 // 4. router.post("/:quizId/questions", addQuestions)
 // 5. router.patch("/:quizId/questions", updateQuestion)
