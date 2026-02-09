@@ -226,3 +226,63 @@ export const updateQuestion = async (req, res) => {
     });
   }
 };
+
+// DEETE A QUESTION
+export const deleteQuestion = async (req, res) => {
+  const { quizId, questionId } = req.params;
+
+  // Validate if quizId is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(quizId)) {
+    return res.status(400).json({
+      message: "Invalid quizId.",
+    });
+  }
+
+  // Validate if questionId is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(questionId)) {
+    return res.status(400).json({
+      message: "Invalid questionId.",
+    });
+  }
+
+  try {
+    const result = await Quiz.findOneAndDelete(
+      {
+        _id: quizId,
+        "questions._id": questionId,
+        owner: req.user._id,
+        isComplete: false, // prevent editing completed quizzes
+      },
+      {
+        $pull: {
+          questions: { _id: questionId },
+        },
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (!result) {
+      return res.status(404).json({
+        message: "Question NOT FOUND.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Deleted the question SUCCESSFULLY.",
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
+    console.log("FAILED to delete a question.", error);
+
+    res.status(500).json({
+      message: "Failed to delete the question",
+    });
+  }
+};
