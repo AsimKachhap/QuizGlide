@@ -286,3 +286,92 @@ export const deleteQuestion = async (req, res) => {
     });
   }
 };
+
+//MARK THE QUIZ AS COMPLETED
+export const completeQuiz = async (req, res) => {
+  const { quizId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(quizId)) {
+    return res.status(400).json({
+      message: "Invalid Quiz Id",
+    });
+  }
+
+  try {
+    const quiz = await Quiz.findByIdAndUpdate(
+      {
+        _id: quizId,
+        owner: req.user._id,
+        isComplete: false,
+      },
+      {
+        isComplete: true,
+      },
+    );
+
+    if (!quiz) {
+      res.status(404).json({
+        message: "Quiz NOT FOUND",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Marked the quiz as COMPLETED",
+      data: quiz,
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
+    console.log("FAILED to mark the quiz as complete.", error);
+
+    res.status(500).json({
+      message: "FAILED to mark the quiz as complete.",
+    });
+  }
+};
+
+//DELETE THE QUIZ
+
+export const deleteQuiz = async (req, res) => {
+  const { quizId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(quizId)) {
+    return res.status(400).json({
+      message: "Invalid Quiz Id",
+    });
+  }
+
+  try {
+    const quiz = await Quiz.findOneAndDelete({
+      _id: quizId,
+      owner: req.user._id,
+    });
+
+    if (!quiz) {
+      return res.status(404).json({
+        message: "Quiz NOT FOUND",
+      });
+    }
+
+    return res.status(200).json({
+      message: "DELETED the quiz",
+      data: quiz,
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
+    console.log("FAILED to delete the quiz.", error);
+
+    res.status(500).json({
+      message: "FAILED to delete the quiz.",
+    });
+  }
+};

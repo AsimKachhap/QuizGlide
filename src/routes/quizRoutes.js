@@ -6,6 +6,8 @@ import {
   addQuestion,
   updateQuestion,
   deleteQuestion,
+  completeQuiz,
+  deleteQuiz,
 } from "../controllers/quizController.js";
 import { authenticate } from "../middlewares/authMiddlewares.js";
 
@@ -17,11 +19,10 @@ router.get("/:quizId", authenticate, getQuizById);
 router.post("/:quizId/questions", authenticate, addQuestion);
 router.patch("/:quizId/questions/:questionId", authenticate, updateQuestion);
 router.delete("/:quizId/questions/:questionId", authenticate, deleteQuestion);
+router.patch("/:quizId/complete", authenticate, completeQuiz);
+router.delete("/:quizId", authenticate, deleteQuiz);
 
 //Quiz Routes to implement
-
-// 6. router.delete("/:quizId/questions", deleteQuestion)
-// 7. router.patch("/:quizId/complete", completeQuiz)
 // 8. router.delete("/:quizId", deleteQuiz)
 
 export default router;
