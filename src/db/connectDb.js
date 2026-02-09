@@ -10,7 +10,7 @@ export const connectDb = async () => {
       mongoInstance.connection.host,
     );
   } catch (error) {
-    console.log("FAILED TO CONNECT MONGODB.");
+    console.log("FAILED TO CONNECT MONGODB.", error);
     process.exit(1);
   }
 };

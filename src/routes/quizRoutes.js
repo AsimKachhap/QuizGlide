@@ -3,19 +3,21 @@ import {
   getMyQuizzes,
   createQuiz,
   getQuizById,
+  addQuestion,
+  updateQuestion,
 } from "../controllers/quizController.js";
 import { authenticate } from "../middlewares/authMiddlewares.js";
 
-const router = express.Router();
+const router = express.Router(); //Keep an eye on Route shadowing.
 
 router.get("/", authenticate, getMyQuizzes);
 router.post("/", authenticate, createQuiz);
 router.get("/:quizId", authenticate, getQuizById);
+router.post("/:quizId/questions", authenticate, addQuestion);
+router.patch("/:quizId/questions/:questionId", authenticate, updateQuestion);
 
 //Quiz Routes to implement
 
-// 3. router.get("/:quizId", getQuizById)
-// 4. router.post("/:quizId/questions", addQuestions)
 // 5. router.patch("/:quizId/questions", updateQuestion)
 // 6. router.delete("/:quizId/questions", deleteQuestion)
 // 7. router.patch("/:quizId/complete", completeQuiz)
