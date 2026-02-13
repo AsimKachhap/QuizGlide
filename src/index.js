@@ -1,12 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import http from "http";
 import { connectDb } from "./db/connectDb.js";
 import authRoutes from "./routes/authRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
+import { attachWebSocketServer } from "./ws/ws_server.js";
 
 dotenv.config();
 const app = express();
+const httpServer = http.createServer(app);
 app.use(express.json());
 app.use(
   cors({
@@ -28,7 +31,9 @@ app.get("/", (req, res) => {
   res.send("Hello from server");
 });
 
-app.listen(PORT, () => {
+attachWebSocketServer(httpServer);
+
+httpServer.listen(PORT, () => {
   connectDb();
   console.log(`SERVER is up and running on PORT : ${PORT}`);
 });
