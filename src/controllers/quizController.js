@@ -2,6 +2,7 @@ import Quiz from "../models/Quiz.js";
 import mongoose from "mongoose";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import { generatePasscode } from "../utils/generatePasscode.js";
 
 // GET ALL QUIZZES
 export const getMyQuizzes = async (req, res) => {
@@ -59,7 +60,12 @@ export const createQuiz = async (req, res) => {
         message: "Quiz Title is required.",
       });
     }
-    const quiz = new Quiz({ title: title, owner: req.user._id });
+    const passcode = generatePasscode();
+    const quiz = new Quiz({
+      title: title,
+      owner: req.user._id,
+      passcode: passcode,
+    });
     console.log(quiz);
     await quiz.save();
     return res.status(201).json({
