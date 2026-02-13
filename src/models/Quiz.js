@@ -56,6 +56,12 @@ const quizSchema = new mongoose.Schema(
       index: true,
     },
 
+    passcode: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+
     isComplete: {
       type: Boolean,
       default: false,
