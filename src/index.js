@@ -5,6 +5,7 @@ import http from "http";
 import { connectDb } from "./db/connectDb.js";
 import authRoutes from "./routes/authRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
 import { attachWebSocketServer } from "./ws/ws_server.js";
 
 dotenv.config();
@@ -26,6 +27,7 @@ const PORT = process.env.PORT || 8080;
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/quizzes", quizRoutes);
+app.use("/api/v1/events", eventRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello from server");
