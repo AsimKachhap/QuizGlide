@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are reqiured." });
+      return res.status(400).json({ message: "All fields are required." });
     }
 
     if (password.length < 6) {
@@ -22,7 +22,7 @@ export const signup = async (req, res) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Invalid Email adddress." });
+      return res.status(400).json({ message: "Invalid Email address." });
     }
 
     const user = new User({
@@ -40,6 +40,9 @@ export const signup = async (req, res) => {
       token: token,
     });
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ message: "Email already exists." });
+    }
     console.log("Signup FAILED", error);
     return res
       .status(500)
