@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
       token: token,
     });
   } catch (error) {
-    if (error.code === 11000) {
+    if (error.cause.code === 11000) {
       return res.status(409).json({ message: "Email already exists." });
     }
     console.log("Signup FAILED", error);
